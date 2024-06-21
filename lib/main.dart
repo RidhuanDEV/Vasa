@@ -3,6 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:vasa/screens/grafik.dart';
 import 'package:vasa/screens/homepage.dart';
 import 'package:vasa/screens/laporan.dart';
+import 'package:vasa/screens/mengelola_rekening.dart';
+import 'package:vasa/screens/profile.dart';
+import 'package:vasa/global.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,29 +33,31 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  int _currentIndex = 0;
+  
 
   final List<Widget> _children = [
     const HomePage(),
     const GrafikScreen(),
     const LaporanPage(),
-    Container(color: Colors.red),
+    const ProfilePage(),
+    const MengelolaRekening(),
   ];
 
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+ void onTabTapped(int index) {
+  setState(() {
+    Globals.currentIndex = index; // Mengatur nilai currentIndex dari global.dart
+  });
+}
+
 
   Widget _buildAppBar() {
-    if (_currentIndex == 0) {
+    if (Globals.currentIndex == 0) {
       return AppBar(
         title: const Text('Pengelola Keuangan'),
         backgroundColor: Colors.cyan,
         centerTitle: true,
       );
-    } else if (_currentIndex == 1) {
+    } else if (Globals.currentIndex == 1) {
       return PreferredSize(
         preferredSize: const Size.fromHeight(100.0),
         child: Container(
@@ -119,50 +124,52 @@ class MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar() as PreferredSizeWidget,
-      body: _children[_currentIndex],
-      floatingActionButton: FloatingActionButton(
+      body: _children[Globals.currentIndex],
+      
+      floatingActionButton: (Globals.currentIndex != 4 ) ? FloatingActionButton(
         onPressed: () {
           // Tambahkan aksi ketika tombol ditekan
         },
         backgroundColor: Colors.cyan,
         child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
+      ): null,
+      floatingActionButtonLocation:  FloatingActionButtonLocation.centerDocked ,
+      bottomNavigationBar:(Globals.currentIndex != 4 ) ? BottomAppBar(
         color: Colors.cyan,
         shape: const CircularNotchedRectangle(),
         notchMargin: 6.0,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-              icon: const Icon(Icons.note, color: Colors.white),
-              onPressed: () {
-                onTabTapped(0);
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.bar_chart, color: Colors.white),
-              onPressed: () {
-                onTabTapped(1);
-              },
-            ),
-            const SizedBox(width: 40), // Tempat untuk floating action button
-            IconButton(
-              icon: const Icon(Icons.report, color: Colors.white),
-              onPressed: () {
-                onTabTapped(2);
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.person, color: Colors.white),
-              onPressed: () {
-                onTabTapped(3);
-              },
-            ),
+        IconButton(
+          icon: const Icon(Icons.note, color: Colors.white),
+          onPressed: () {
+            onTabTapped(0);
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.bar_chart, color: Colors.white),
+          onPressed: () {
+            onTabTapped(1);
+          },
+        ),
+        const SizedBox(width: 40), // Tempat untuk floating action button
+        IconButton(
+          icon: const Icon(Icons.report, color: Colors.white),
+          onPressed: () {
+            onTabTapped(2);
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.person, color: Colors.white),
+          onPressed: () {
+            onTabTapped(3);
+          },
+        ),
+        
           ],
         ),
-      ),
+      ) : null,
     );
   }
 }

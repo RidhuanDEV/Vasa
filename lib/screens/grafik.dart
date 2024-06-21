@@ -7,11 +7,10 @@ class GrafikScreen extends StatefulWidget {
   const GrafikScreen({super.key});
 
   @override
-  _GrafikScreenState createState() => _GrafikScreenState();
+  GrafikScreenState createState() => GrafikScreenState();
 }
 
-class _GrafikScreenState extends State<GrafikScreen> {
-  final DateTime _currentDate = DateTime.now();
+class GrafikScreenState extends State<GrafikScreen> {
 
   @override
   Widget build(BuildContext context) {
