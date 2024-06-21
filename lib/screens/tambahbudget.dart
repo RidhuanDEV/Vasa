@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AddBudgetScreen extends StatefulWidget {
+  const AddBudgetScreen({super.key});
+
   @override
   _AddBudgetScreenState createState() => _AddBudgetScreenState();
 }
@@ -18,7 +20,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add new budget'),
+        title: const Text('Add new budget'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -27,18 +29,18 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
           child: ListView(
             children: [
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Select budget',
                 ),
-                items: [
-                  DropdownMenuItem(child: Text('Transport'), value: 'Transport'),
-                  DropdownMenuItem(child: Text('Restaurant'), value: 'Restaurant'),
-                  DropdownMenuItem(child: Text('Grocery'), value: 'Grocery'),
-                  DropdownMenuItem(child: Text('Medication'), value: 'Medication'),
-                  DropdownMenuItem(child: Text('Cloth'), value: 'Cloth'),
-                  DropdownMenuItem(child: Text('Beauty'), value: 'Beauty'),
-                  DropdownMenuItem(child: Text('Entertainment'), value: 'Entertainment'),
-                  DropdownMenuItem(child: Text('Bill'), value: 'Bill'),
+                items: const [
+                  DropdownMenuItem(value: 'Transport', child: Text('Transport')),
+                  DropdownMenuItem(value: 'Restaurant', child: Text('Restaurant')),
+                  DropdownMenuItem(value: 'Grocery', child: Text('Grocery')),
+                  DropdownMenuItem(value: 'Medication', child: Text('Medication')),
+                  DropdownMenuItem(value: 'Cloth', child: Text('Cloth')),
+                  DropdownMenuItem(value: 'Beauty', child: Text('Beauty')),
+                  DropdownMenuItem(value: 'Entertainment', child: Text('Entertainment')),
+                  DropdownMenuItem(value: 'Bill', child: Text('Bill')),
                 ],
                 onChanged: (value) {
                   setState(() {
@@ -53,7 +55,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Amount',
                 ),
                 keyboardType: TextInputType.number,
@@ -68,7 +70,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Start date',
                 ),
                 readOnly: true,
@@ -98,7 +100,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'End date',
                 ),
                 readOnly: true,
@@ -128,13 +130,13 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                 },
               ),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Select account',
                 ),
-                items: [
-                  DropdownMenuItem(child: Text('Account 1'), value: 'Account 1'),
-                  DropdownMenuItem(child: Text('Account 2'), value: 'Account 2'),
-                  DropdownMenuItem(child: Text('Account 3'), value: 'Account 3'),
+                items: const [
+                  DropdownMenuItem(value: 'Account 1', child: Text('Account 1')),
+                  DropdownMenuItem(value: 'Account 2', child: Text('Account 2')),
+                  DropdownMenuItem(value: 'Account 3', child: Text('Account 3')),
                 ],
                 onChanged: (value) {
                   setState(() {
@@ -149,7 +151,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                 },
               ),
               CheckboxListTile(
-                title: Text('Repeat for every month'),
+                title: const Text('Repeat for every month'),
                 value: _repeatEveryMonth,
                 onChanged: (value) {
                   setState(() {
@@ -157,7 +159,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                   });
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -165,7 +167,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                     // Handle form submission here
                   }
                 },
-                child: Text('Add budget'),
+                child: const Text('Add budget'),
               ),
             ],
           ),
