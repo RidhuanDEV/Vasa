@@ -96,7 +96,11 @@ class MengelolaRekeningState extends State<MengelolaRekening> {
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton.icon(
               onPressed: () {
-                // Tambahkan logika untuk menambah rekening baru
+                Globals.currentIndex = 5;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainScreen()),
+                );
               },
               icon: const Icon(Icons.add, color: Colors.black),
               label: const Text(

@@ -6,6 +6,7 @@ import 'package:vasa/screens/laporan.dart';
 import 'package:vasa/screens/mengelola_rekening.dart';
 import 'package:vasa/screens/profile.dart';
 import 'package:vasa/global.dart';
+import 'package:vasa/screens/tambah_rekening.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,6 +42,7 @@ class MainScreenState extends State<MainScreen> {
     const LaporanPage(),
     const ProfilePage(),
     const MengelolaRekening(),
+    const TambahRekening(),
   ];
 
  void onTabTapped(int index) {
@@ -126,7 +128,7 @@ class MainScreenState extends State<MainScreen> {
       appBar: _buildAppBar() as PreferredSizeWidget,
       body: _children[Globals.currentIndex],
       
-      floatingActionButton: (Globals.currentIndex != 4 ) ? FloatingActionButton(
+      floatingActionButton: (Globals.currentIndex != 4 && Globals.currentIndex != 5) ? FloatingActionButton(
         onPressed: () {
           // Tambahkan aksi ketika tombol ditekan
         },
@@ -134,7 +136,7 @@ class MainScreenState extends State<MainScreen> {
         child: const Icon(Icons.add),
       ): null,
       floatingActionButtonLocation:  FloatingActionButtonLocation.centerDocked ,
-      bottomNavigationBar:(Globals.currentIndex != 4 ) ? BottomAppBar(
+      bottomNavigationBar:(Globals.currentIndex != 4 && Globals.currentIndex != 5) ? BottomAppBar(
         color: Colors.cyan,
         shape: const CircularNotchedRectangle(),
         notchMargin: 6.0,
