@@ -56,52 +56,68 @@ class LaporanPageState extends State<LaporanPage> {
           : null,
       body: Column(
         children: [
-          Container(
-            height: 70,
-            decoration: const BoxDecoration(
-              color: Colors.cyan,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: isAnalysisSelected ? null : toggleSelection,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: isAnalysisSelected ? Colors.black : Colors.white,
-                      borderRadius: BorderRadius.circular(20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: (){
+                  setState(() {
+                  isAnalysisSelected = true;
+                    
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      isAnalysisSelected ? Colors.black : Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
                     ),
-                    child: Text(
-                      'Analisis',
-                      style: GoogleFonts.montserrat(
-                        color: isAnalysisSelected ? Colors.white : Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    side: BorderSide(
+                      color: Colors.black,
+                      width: 2,
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: isAnalysisSelected ? toggleSelection : null,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: isAnalysisSelected ? Colors.white : Colors.black,
-                      borderRadius: BorderRadius.circular(20),
+                child: Text(
+                  'Analisis',
+                  style: GoogleFonts.montserrat(
+                    color: isAnalysisSelected ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                  isAnalysisSelected = false;
+                    
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      isAnalysisSelected ? Colors.white : Colors.black,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
                     ),
-                    child: Text(
-                      'Rekening',
-                      style: GoogleFonts.montserrat(
-                        color: isAnalysisSelected ? Colors.black : Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    side: BorderSide(
+                      color: Colors.black,
+                      width: 2,
                     ),
                   ),
                 ),
-              ],
-            ),
+                child: Text(
+                  'Rekening',
+                  style: GoogleFonts.montserrat(
+                    color: isAnalysisSelected ? Colors.black : Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
           ),
           Expanded(
             child: isAnalysisSelected
@@ -158,7 +174,7 @@ class LaporanPageState extends State<LaporanPage> {
                   style: GoogleFonts.montserrat(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                                SizedBox(
                   height: 120,
                   child: PieChart(
                     PieChartData(
@@ -243,7 +259,7 @@ class LaporanPageState extends State<LaporanPage> {
       margin: const EdgeInsets.symmetric(vertical: 4.0),
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
+        border: Border.all(color: Colors.red),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
