@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vasa/global.dart';
+import 'package:vasa/main.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
-
+  void onTabTapped(int index) {
+    Globals.currentIndex = index;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +74,13 @@ class ProfilePage extends StatelessWidget {
               context,
               icon: Icons.settings,
               text: 'Pengaturan',
-              onPressed: () {},
+              onPressed: () {
+                onTabTapped(7);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainScreen()),
+                );
+              },
             ),
           ],
         ),

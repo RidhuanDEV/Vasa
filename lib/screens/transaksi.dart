@@ -8,14 +8,14 @@ class Transaksi extends StatefulWidget {
   @override
   State<Transaksi> createState() => _TransaksiState();
 }
-
+  
 class _TransaksiState extends State<Transaksi> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController jenisController = TextEditingController();
   TextEditingController jumlahController = TextEditingController();
   TextEditingController catatanController = TextEditingController();
   bool isButtonEnabled = false;
-  bool isPengeluaran = true;
+  bool isPengeluaran = true;  
   String? selectedIcon;  // Menyimpan ikon yang dipilih
 
   void onTabTapped(int index) {

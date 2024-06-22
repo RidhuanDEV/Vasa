@@ -39,6 +39,7 @@ dependencies:
   flutter_calendar_carousel: ^2.4.3
   fl_chart: ^0.68.0
   assets: ^0.0.1
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

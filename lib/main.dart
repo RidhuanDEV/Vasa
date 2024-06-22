@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:vasa/screens/akun.dart';
 import 'package:vasa/screens/grafik.dart';
 import 'package:vasa/screens/homepage.dart';
 import 'package:vasa/screens/laporan.dart';
 import 'package:vasa/screens/mengelola_rekening.dart';
+import 'package:vasa/screens/pengaturan.dart';
 import 'package:vasa/screens/profile.dart';
 import 'package:vasa/global.dart';
 import 'package:vasa/screens/tambah_rekening.dart';
 import 'package:vasa/screens/transaksi.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -42,6 +45,8 @@ class MainScreenState extends State<MainScreen> {
     const MengelolaRekening(),
     const TambahRekening(),
     const Transaksi(),
+    const Pengaturan(),
+    const AkunPage(),
   ];
 
   void onTabTapped(int index) {
@@ -81,7 +86,8 @@ class MainScreenState extends State<MainScreen> {
       body: _children[Globals.currentIndex],
       floatingActionButton: (Globals.currentIndex != 4 &&
               Globals.currentIndex != 5 &&
-              Globals.currentIndex != 6)
+              Globals.currentIndex != 6 &&
+              Globals.currentIndex != 7)
           ? FloatingActionButton(
               onPressed: () {
                 onTabTapped(6);
@@ -93,7 +99,8 @@ class MainScreenState extends State<MainScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: (Globals.currentIndex != 4 &&
               Globals.currentIndex != 5 &&
-              Globals.currentIndex != 6)
+              Globals.currentIndex != 6 &&
+              Globals.currentIndex != 7)
           ? BottomAppBar(
               color: Colors.cyan,
               shape: const CircularNotchedRectangle(),
