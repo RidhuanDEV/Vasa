@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vasa/global.dart';
-import 'package:vasa/main.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -13,7 +12,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: (Globals.currentIndex == 3) ? PreferredSize(
         preferredSize:
-            const Size.fromHeight(150.0), // Set the height of the AppBar
+            const Size.fromHeight(100.0), // Set the height of the AppBar
         child: AppBar(
           flexibleSpace: Container(
             decoration: const BoxDecoration(
@@ -26,12 +25,6 @@ class ProfilePage extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Row(
                 children: [
-                  const CircleAvatar(
-                    radius: 40, // Adjust the size of the avatar
-                    backgroundImage:
-                        AssetImage('assets/avatar.png'), // Your image asset
-                  ),
-                  const SizedBox(width: 20),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +38,7 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'ID: 000000',
+                        'ID: 1152200025',
                         style: GoogleFonts.montserrat(
                           fontSize: 16,
                           color: Colors.black,
@@ -59,30 +52,56 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
       ) : null,
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            buildProfileButton(
-              context,
-              icon: Icons.thumb_up,
-              text: 'Rekomendasi ke teman',
-              onPressed: () {},
-            ),
-            const SizedBox(height: 20),
-            buildProfileButton(
-              context,
-              icon: Icons.settings,
-              text: 'Pengaturan',
-              onPressed: () {
-                onTabTapped(7);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MainScreen()),
-                );
-              },
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              buildProfileButton(
+                context,
+                icon: Icons.thumb_up,
+                text: 'Rekomendasi ke teman',
+                onPressed: () {},
+              ),
+              const SizedBox(height: 10),
+              buildProfileButton(
+                context,
+                icon: Icons.attach_money,
+                text: 'Konversi Mata Uang',
+                onPressed: () {},
+              ),
+              const SizedBox(height: 10),
+              buildProfileButton(
+                context,
+                icon: Icons.palette,
+                text: 'Tema Aplikasi',
+                onPressed: () {},
+              ),
+              const SizedBox(height: 10),
+              buildProfileButton(
+                context,
+                icon: Icons.privacy_tip,
+                text: 'Kebijakan Privasi',
+                onPressed: () {},
+              ),
+              const SizedBox(height: 10),
+              buildProfileButton(
+                context,
+                icon: Icons.info,
+                text: 'Tentang Kami',
+                onPressed: () {},
+              ),
+             
+              const SizedBox(height: 10),
+              buildProfileButton(
+                context,
+                icon: Icons.delete,
+                text: 'Hapus Data',
+                onPressed: () {},
+              ),
+              
+            ],
+          ),
         ),
       ),
     );

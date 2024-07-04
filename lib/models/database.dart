@@ -102,6 +102,9 @@ class AppDatabase extends _$AppDatabase {
   Future<List<Rekening>> getAllRekenings() {
     return select(rekenings).get();
   }
+    Future deleteRekening(int id) {
+    return (delete(rekenings)..where((t) => t.id.equals(id))).go();
+  }
   Future<int> getTotalRekening(String jenis) async {
     final query = select(rekenings)
       ..where((t) =>
@@ -112,6 +115,12 @@ class AppDatabase extends _$AppDatabase {
       total += rekening.uang;
     }
     return total;
+  }
+ Future<int> insertRekening(RekeningsCompanion entry) {
+    return into(rekenings).insert(entry);
+  }
+  Future updateRekening(Rekening entry) {
+    return update(rekenings).replace(entry);
   }
 }
 

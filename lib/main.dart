@@ -125,7 +125,7 @@ class MainScreenState extends State<MainScreen> {
                     },
                   ),
                   IconButton(
-                    icon: const Icon(Icons.person, color: Colors.white),
+                    icon: const Icon(Icons.settings, color: Colors.white),
                     onPressed: () {
                       onTabTapped(3);
                     },
