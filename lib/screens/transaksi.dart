@@ -1,26 +1,34 @@
+import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:vasa/global.dart';
 import 'package:vasa/main.dart';
+import 'package:vasa/models/database.dart';
 
 class Transaksi extends StatefulWidget {
-  const Transaksi({super.key});
+  final Pengelolaan? transaction;
+
+  const Transaksi({super.key, this.transaction});
 
   @override
   State<Transaksi> createState() => _TransaksiState();
 }
-  
+
 class _TransaksiState extends State<Transaksi> {
+  final AppDatabase database = AppDatabase(NativeDatabase.memory());
   final _formKey = GlobalKey<FormState>();
   TextEditingController jenisController = TextEditingController();
   TextEditingController jumlahController = TextEditingController();
   TextEditingController catatanController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  int type = 1;
   bool isButtonEnabled = false;
-  bool isPengeluaran = true;  
-  String? selectedIcon;  // Menyimpan ikon yang dipilih
+  bool isPengeluaran = true;
+  String? selectedIcon;
 
   void onTabTapped(int index) {
     setState(() {
-      Globals.currentIndex = index; // Mengatur nilai currentIndex dari global.dart
+      Globals.currentIndex = index;
     });
   }
 
@@ -38,23 +46,63 @@ class _TransaksiState extends State<Transaksi> {
     }
   }
 
+  Future<void> insert(String jenis, int jumlah, int type, String catatan, DateTime tanggal) async {
+    DateTime now = DateTime.now();
+    await database.into(database.pengelola).insertReturning(
+      PengelolaCompanion.insert(
+        jenis: jenis,
+        uang: jumlah,
+        catatan: catatan,
+        createdAt: now,
+        updatedAt: now,
+        type: type,
+        transaksidate: tanggal,
+      ),
+    );
+  }
+
+  Future<void> updateTransaction(Pengelolaan transaction) async {
+    DateTime now = DateTime.now();
+    final updatedTransaction = transaction.copyWith(
+      jenis: jenisController.text,
+      uang: int.parse(jumlahController.text),
+      catatan: catatanController.text,
+      type: type,
+      transaksidate: DateTime.parse(dateController.text),
+      updatedAt: now,
+    );
+
+    await database.updateTransaction(updatedTransaction);
+  }
+
   @override
   void initState() {
     super.initState();
     jenisController.addListener(checkFormStatus);
     jumlahController.addListener(checkFormStatus);
     catatanController.addListener(checkFormStatus);
+
+    if (widget.transaction != null) {
+      jenisController.text = widget.transaction!.jenis;
+      jumlahController.text = widget.transaction!.uang.toString();
+      catatanController.text = widget.transaction!.catatan;
+      dateController.text = DateFormat('yyyy-MM-dd').format(widget.transaction!.transaksidate);
+      type = widget.transaction!.type;
+      isPengeluaran = type == 1;
+      selectedIcon = widget.transaction!.jenis;
+    }
   }
 
   void setIconJenis(String jenis) {
     setState(() {
       jenisController.text = jenis;
-      selectedIcon = jenis;  // Mengatur ikon yang dipilih
+      selectedIcon = jenis;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final isEditMode = widget.transaction != null;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -67,7 +115,7 @@ class _TransaksiState extends State<Transaksi> {
             );
           },
         ),
-        title: const Text('Tambahkan'),
+        title: Text(isEditMode ? 'Edit Transaksi' : 'Tambahkan Transaksi'),
         backgroundColor: Colors.cyan,
         toolbarHeight: 80,
         centerTitle: true,
@@ -81,12 +129,14 @@ class _TransaksiState extends State<Transaksi> {
                 onPressed: () {
                   setState(() {
                     isPengeluaran = true;
-                    selectedIcon = null;  // Reset pilihan ikon
+                    type = 1;
+                    selectedIcon = null;
+                    jenisController.clear();
                   });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isPengeluaran ? Colors.black : Colors.white,
-                  shape: RoundedRectangleBorder(
+                  shape:  RoundedRectangleBorder(
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       bottomLeft: Radius.circular(10),
@@ -108,7 +158,9 @@ class _TransaksiState extends State<Transaksi> {
                 onPressed: () {
                   setState(() {
                     isPengeluaran = false;
-                    selectedIcon = null;  // Reset pilihan ikon
+                    type = 2;
+                    jenisController.clear();
+                    selectedIcon = null;
                   });
                 },
                 style: ElevatedButton.styleFrom(
@@ -141,7 +193,6 @@ class _TransaksiState extends State<Transaksi> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      
                       TextFormField(
                         controller: jumlahController,
                         keyboardType: TextInputType.number,
@@ -165,7 +216,6 @@ class _TransaksiState extends State<Transaksi> {
                         ),
                         enabled: false,
                       ),
-                      
                       const SizedBox(height: 16),
                       TextFormField(
                         controller: catatanController,
@@ -180,8 +230,28 @@ class _TransaksiState extends State<Transaksi> {
                           return null;
                         },
                       ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: dateController,
+                        readOnly: true,
+                        decoration: const InputDecoration(
+                          labelText: 'Enter Date',
+                          border: OutlineInputBorder(),
+                        ),
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(DateTime.now().year - 5),
+                            lastDate: DateTime(DateTime.now().year + 5),
+                          );
+                          if (pickedDate != null) {
+                            String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                            dateController.text = formattedDate;
+                          }
+                        },
+                      ),
                       const SizedBox(height: 32),
-                      // tambahkan icon disini
                       SizedBox(
                         height: 250,
                         child: GridView.count(
@@ -198,12 +268,17 @@ class _TransaksiState extends State<Transaksi> {
                                       children: [
                                         Icon(
                                           icon['icon'],
-                                          color: selectedIcon == icon['label'] ? Colors.green[500] : Colors.black,size: 30,
+                                          color: selectedIcon == icon['label']
+                                              ? Colors.green[500]
+                                              : Colors.black,
+                                          size: 30,
                                         ),
                                         Text(
                                           icon['label'],
                                           style: TextStyle(
-                                            color: selectedIcon == icon['label'] ? Colors.green[500] : Colors.black,
+                                            color: selectedIcon == icon['label']
+                                                ? Colors.green[500]
+                                                : Colors.black,
                                           ),
                                         ),
                                       ],
@@ -219,12 +294,17 @@ class _TransaksiState extends State<Transaksi> {
                                       children: [
                                         Icon(
                                           icon['icon'],
-                                          color : selectedIcon == icon['label'] ? Colors.green[500] : Colors.black,size: 30,
+                                          color: selectedIcon == icon['label']
+                                              ? Colors.green[500]
+                                              : Colors.black,
+                                          size: 30,
                                         ),
                                         Text(
                                           icon['label'],
                                           style: TextStyle(
-                                            color: selectedIcon == icon['label'] ? Colors.green[500] : Colors.black,
+                                            color: selectedIcon == icon['label']
+                                                ? Colors.green[500]
+                                                : Colors.black,
                                           ),
                                         ),
                                       ],
@@ -233,11 +313,27 @@ class _TransaksiState extends State<Transaksi> {
                                 }).toList(),
                         ),
                       ),
-                      const SizedBox(height: 1),
+                      const SizedBox(height: 32),
                       ElevatedButton(
                         onPressed: isButtonEnabled
-                            ? () {
+                            ? () async {
                                 if (_formKey.currentState!.validate()) {
+                                  if (isEditMode) {
+                                    await updateTransaction(widget.transaction!);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Update Berhasil'),
+                                      ),
+                                    );
+                                  } else {
+                                    await insert(
+                                      jenisController.text,
+                                      int.parse(jumlahController.text),
+                                      type,
+                                      catatanController.text,
+                                      DateTime.parse(dateController.text),
+                                    );
+                                  }
                                   Globals.currentIndex = 0;
                                   Navigator.push(
                                     context,
@@ -249,15 +345,19 @@ class _TransaksiState extends State<Transaksi> {
                               }
                             : null,
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: Colors.cyan,
-                          textStyle: const TextStyle(
-                            fontSize: 20,
+                          backgroundColor: isButtonEnabled
+                              ? Colors.blue
+                              : Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text(
-                          'Tambahkan Transaksi',
-                          style: TextStyle(color: Colors.black),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            isEditMode ? 'Save Changes' : 'Tambahkan Transaksi',
+                            style: const TextStyle(fontSize: 18),
+                          ),
                         ),
                       ),
                     ],
@@ -269,8 +369,8 @@ class _TransaksiState extends State<Transaksi> {
         ],
       ),
     );
-  }
 
+  }
   final List<Map<String, dynamic>> pengeluaranIcons = [
     {'icon': Icons.shopping_cart, 'label': 'Belanja'},
     {'icon': Icons.restaurant, 'label': 'Makanan'},
@@ -287,7 +387,7 @@ class _TransaksiState extends State<Transaksi> {
     {'icon': Icons.card_giftcard, 'label': 'Hadiah'},
     {'icon': Icons.volunteer_activism, 'label': 'Donasi'},
     {'icon': Icons.local_florist, 'label': 'Buah'},
-     {'icon': Icons.apps, 'label': 'Lain-lain'},
+    {'icon': Icons.apps, 'label': 'Lain-lain'},
   ];
 
   final List<Map<String, dynamic>> pemasukanIcons = [

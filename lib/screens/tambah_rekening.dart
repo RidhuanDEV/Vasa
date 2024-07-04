@@ -136,13 +136,13 @@ class _TambahRekeningState extends State<TambahRekening> {
                       Column(
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.money,
+                            icon: const Icon(Icons.currency_bitcoin_sharp,
                                 color: Colors.black, size: 30),
                             onPressed: () {
-                              jenisController.text = 'money';
+                              jenisController.text = 'crypto';
                             },
                           ),
-                          const Text('money'),
+                          const Text('crypto'),
                         ],
                       ),
                       const SizedBox(width: 16),

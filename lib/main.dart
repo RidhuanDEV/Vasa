@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:vasa/screens/akun.dart';
 import 'package:vasa/screens/grafik.dart';
 import 'package:vasa/screens/homepage.dart';
@@ -37,8 +38,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
+  DateTime _homePageDate = DateTime.now();
+
   final List<Widget> _children = [
-    const HomePage(),
+    HomePage(initialDate: DateTime.now()),
     const GrafikScreen(),
     const LaporanPage(),
     const ProfilePage(),
@@ -51,8 +54,11 @@ class MainScreenState extends State<MainScreen> {
 
   void onTabTapped(int index) {
     setState(() {
-      Globals.currentIndex =
-          index; // Mengatur nilai currentIndex dari global.dart
+      Globals.currentIndex = index; // Mengatur nilai currentIndex dari global.dart
+      if (index == 0) {
+        _homePageDate = DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
+        _children[0] = HomePage(initialDate: _homePageDate);
+      }
     });
   }
 
@@ -84,27 +90,13 @@ class MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: _buildAppBar() as PreferredSizeWidget,
       body: _children[Globals.currentIndex],
-      floatingActionButton: (Globals.currentIndex != 4 &&
-              Globals.currentIndex != 5 &&
-              Globals.currentIndex != 6 &&
-              Globals.currentIndex != 7)
-          ? FloatingActionButton(
-              onPressed: () {
-                onTabTapped(6);
-              },
-              backgroundColor: Colors.cyan,
-              child: const Icon(Icons.add),
-            )
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: (Globals.currentIndex != 4 &&
               Globals.currentIndex != 5 &&
               Globals.currentIndex != 6 &&
               Globals.currentIndex != 7)
           ? BottomAppBar(
               color: Colors.cyan,
-              shape: const CircularNotchedRectangle(),
-              notchMargin: 6.0,
+              
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -120,8 +112,12 @@ class MainScreenState extends State<MainScreen> {
                       onTabTapped(1);
                     },
                   ),
-                  const SizedBox(
-                      width: 40), // Tempat untuk floating action button
+                  IconButton(
+                    icon: const Icon(Icons.add, color: Colors.white, size: 32.0),
+                    onPressed: () {
+                      onTabTapped(6);
+                    },
+                  ),
                   IconButton(
                     icon: const Icon(Icons.report, color: Colors.white),
                     onPressed: () {
