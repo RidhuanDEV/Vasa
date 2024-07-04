@@ -1,8 +1,8 @@
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vasa/botnav.dart';
 import 'package:vasa/global.dart';
-import 'package:vasa/main.dart';
 import 'package:vasa/models/database.dart';
 import 'package:vasa/screens/tambah_rekening.dart';
 
@@ -88,7 +88,7 @@ Widget build(BuildContext context) {
                 onTabTapped(2);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainScreen()),
+                  MaterialPageRoute(builder: (context) => const BotNav()),
                 );
               },
             ),
@@ -132,7 +132,7 @@ Widget build(BuildContext context) {
               Globals.currentIndex = 5;
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MainScreen()),
+                MaterialPageRoute(builder: (context) => const BotNav()),
               );
             },
             icon: const Icon(Icons.add, color: Colors.black),

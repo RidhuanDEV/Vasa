@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vasa/botnav.dart';
 import 'package:vasa/global.dart';
-import 'package:vasa/main.dart';
 
 class Pengaturan extends StatefulWidget {
   const Pengaturan({super.key});
@@ -93,7 +93,7 @@ class _PengaturanState extends State<Pengaturan> {
         return;
     }
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const MainScreen()),
+      MaterialPageRoute(builder: (context) => const BotNav()),
     );
   }
 }

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart'; // Add this import for DateFormat
+import 'package:vasa/botnav.dart';
 import 'package:vasa/global.dart';
-import 'package:vasa/main.dart';
 import 'package:vasa/models/database.dart'; // Add this import for database queries
 
 class LaporanPage extends StatefulWidget {
@@ -157,6 +157,7 @@ class LaporanPageState extends State<LaporanPage> {
     return Scaffold(
       appBar: (Globals.currentIndex == 2)
           ? AppBar(
+              automaticallyImplyLeading: false,
               title: const Text('Laporan'),
               centerTitle: true,
               backgroundColor: Colors.cyan,
@@ -778,7 +779,7 @@ class LaporanPageState extends State<LaporanPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const MainScreen()),
+                                builder: (context) => const BotNav()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
