@@ -12,12 +12,12 @@ class HomePage extends StatefulWidget {
 
   @override
   HomePageState createState() => HomePageState();
-  
 }
 
 class HomePageState extends State<HomePage> {
   late AppDatabase _database;
-  DateTime _selectedDate = DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
+  DateTime _selectedDate =
+      DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
   int _totalExpense = 0;
   int _totalIncome = 0;
   @override
@@ -26,6 +26,7 @@ class HomePageState extends State<HomePage> {
     _calculateTotals();
     super.initState();
   }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -43,29 +44,31 @@ class HomePageState extends State<HomePage> {
 
   Future<void> _calculateTotals() async {
     if (_selectedDate == DateTime.now()) {
-      int totalExpense = await _database.getTotalByTypeAndDate(1, DateTime.now());
-      int totalIncome = await _database.getTotalByTypeAndDate(2, DateTime.now());
+      int totalExpense =
+          await _database.getTotalByTypeAndDate(1, DateTime.now());
+      int totalIncome =
+          await _database.getTotalByTypeAndDate(2, DateTime.now());
       setState(() {
-      _totalExpense = totalExpense;
-      _totalIncome = totalIncome;
-    });
-    }else {
-      int totalExpense = await _database.getTotalByTypeAndDate(1, _selectedDate);
+        _totalExpense = totalExpense;
+        _totalIncome = totalIncome;
+      });
+    } else {
+      int totalExpense =
+          await _database.getTotalByTypeAndDate(1, _selectedDate);
       int totalIncome = await _database.getTotalByTypeAndDate(2, _selectedDate);
       setState(() {
-      _totalExpense = totalExpense;
-      _totalIncome = totalIncome;
-    });
-    
+        _totalExpense = totalExpense;
+        _totalIncome = totalIncome;
+      });
     }
   }
 
   Future<List<Pengelolaan>> _fetchTransactions(int type) {
     if (_selectedDate == DateTime.now()) {
       return _database.getTransactionsByTypeAndDate(type, DateTime.now());
-    }else {
-    return _database.getTransactionsByTypeAndDate(type, _selectedDate);
-  }
+    } else {
+      return _database.getTransactionsByTypeAndDate(type, _selectedDate);
+    }
   }
 
   String _formatCurrency(int amount) {
@@ -136,7 +139,6 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -163,7 +165,7 @@ class HomePageState extends State<HomePage> {
                       Text(
                         _formatCurrency(_totalExpense).replaceAll('.0', ''),
                         style: GoogleFonts.montserrat(
-                            color: Colors.black, fontWeight: FontWeight.bold),
+                            color: Colors.red, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -177,7 +179,7 @@ class HomePageState extends State<HomePage> {
                       Text(
                         _formatCurrency(_totalIncome).replaceAll('.0', ''),
                         style: GoogleFonts.montserrat(
-                            color: Colors.black, fontWeight: FontWeight.bold),
+                            color: const Color.fromARGB(255, 0, 255, 8), fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -189,9 +191,14 @@ class HomePageState extends State<HomePage> {
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        _formatCurrency(_totalIncome - _totalExpense).replaceAll('.0', ''),
+                        (_totalIncome - _totalExpense < 0
+                            ? '-${_formatCurrency(_totalIncome - _totalExpense).replaceAll('.0', '')}'
+                            : _formatCurrency(_totalIncome - _totalExpense).replaceAll('.0', '')),
                         style: GoogleFonts.montserrat(
-                            color: Colors.black, fontWeight: FontWeight.bold),
+                            color: _totalIncome - _totalExpense < 0
+                                ? Colors.red
+                                : Colors.green,
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -203,13 +210,12 @@ class HomePageState extends State<HomePage> {
               child: Container(
                 decoration: const BoxDecoration(
                   border: Border(
-                  bottom: BorderSide(color: Colors.black),
+                    bottom: BorderSide(color: Colors.black),
                   ),
                 ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Row(
-                  
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
@@ -261,7 +267,8 @@ class HomePageState extends State<HomePage> {
                               return _buildExpenseItem(
                                   _getIconData(transaction.jenis),
                                   transaction.catatan,
-                                  _formatCurrency(transaction.uang).replaceAll('.0', ''),
+                                  _formatCurrency(transaction.uang)
+                                      .replaceAll('.0', ''),
                                   Colors.red);
                             }).toList(),
                           );
@@ -297,7 +304,8 @@ class HomePageState extends State<HomePage> {
                               return _buildIncomeItem(
                                   _getIconData(transaction.jenis),
                                   transaction.catatan,
-                                  _formatCurrency(transaction.uang).replaceAll('.0', ''),
+                                  _formatCurrency(transaction.uang)
+                                      .replaceAll('.0', ''),
                                   Colors.blue);
                             }).toList(),
                           );
@@ -307,11 +315,11 @@ class HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 10.0),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 96.0,vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 96.0, vertical: 12),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.cyan,
-                        
                       ),
                       onPressed: () {
                         Navigator.push(
@@ -323,7 +331,10 @@ class HomePageState extends State<HomePage> {
                       child: Center(
                         child: Text(
                           'View All',
-                          style: GoogleFonts.montserrat(fontSize: 16.0, color: Colors.white,fontWeight: FontWeight.bold),
+                          style: GoogleFonts.montserrat(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),

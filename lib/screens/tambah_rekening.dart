@@ -1,7 +1,7 @@
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
+import 'package:vasa/botnav.dart';
 import 'package:vasa/global.dart';
-import 'package:vasa/main.dart';
 import 'package:vasa/models/database.dart';
 
 class TambahRekening extends StatefulWidget {
@@ -101,7 +101,7 @@ class _TambahRekeningState extends State<TambahRekening> {
             Globals.currentIndex = 0;
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const MainScreen()),
+              MaterialPageRoute(builder: (context) => const BotNav()),
             );
           },
         ),
@@ -231,7 +231,7 @@ class _TambahRekeningState extends State<TambahRekening> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const MainScreen(),
+                                      builder: (context) => const BotNav(),
                                     ),
                                   );
                                 }

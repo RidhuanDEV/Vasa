@@ -14,6 +14,7 @@ class ProfilePage extends StatelessWidget {
         preferredSize:
             const Size.fromHeight(100.0), // Set the height of the AppBar
         child: AppBar(
+          automaticallyImplyLeading: false,
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               color: Colors.cyan, // Background color
