@@ -10,6 +10,7 @@ import 'package:vasa/screens/profile.dart';
 import 'package:vasa/global.dart';
 import 'package:vasa/screens/tambah_rekening.dart';
 import 'package:vasa/screens/transaksi.dart';
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
 class BotNav extends StatefulWidget {
   const BotNav({super.key});
@@ -24,11 +25,11 @@ class BotNavState extends State<BotNav> {
   final List<Widget> _children = [
     HomePage(initialDate: DateTime.now()),
     const GrafikScreen(),
-    const LaporanPage(),
+    const Transaksi(),       // Transaksi screen
+    const LaporanPage(),     // Laporan screen
     const ProfilePage(),
     const MengelolaRekening(),
     const TambahRekening(),
-    const Transaksi(),
     const Pengaturan(),
     const AkunPage(),
   ];
@@ -47,7 +48,9 @@ class BotNavState extends State<BotNav> {
     if (Globals.currentIndex == 0) {
       return AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Pengelola Keuangan'),
+        title: const Center(
+          child: Text('Pengelola Keuangan', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold)),
+        ),
         backgroundColor: Colors.cyan,
         centerTitle: true,
       );
@@ -55,7 +58,36 @@ class BotNavState extends State<BotNav> {
       return AppBar(
         automaticallyImplyLeading: false,
         title: const Center(
-          child: Text('Grafik Keuangan', style: TextStyle(color: Colors.white)),
+          child: Text('Grafik Keuangan', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold)),
+        ),
+        backgroundColor: Colors.cyan,
+        centerTitle: true,
+      );
+    } else if (Globals.currentIndex == 2) {
+      return AppBar(
+        automaticallyImplyLeading: false,
+        title: const Center(
+          child: Text('Tambah Transaksi', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold)),
+        ),
+        backgroundColor: Colors.cyan,
+        centerTitle: true,
+      );
+    } else if (Globals.currentIndex == 3) {
+      return AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 120,
+        title: const Center(
+          child: Text('Laporan Keuangan', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold)),
+        ),
+        backgroundColor: Colors.cyan,
+        centerTitle: true,
+      );
+    } else if (Globals.currentIndex == 4) {
+      return AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 120,
+        title: const Center(
+          child: Text('More Feature', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold)),
         ),
         backgroundColor: Colors.cyan,
         centerTitle: true,
@@ -73,49 +105,19 @@ class BotNavState extends State<BotNav> {
     return Scaffold(
       appBar: _buildAppBar() as PreferredSizeWidget,
       body: _children[Globals.currentIndex],
-      bottomNavigationBar: (Globals.currentIndex != 4 &&
-              Globals.currentIndex != 5 &&
-              Globals.currentIndex != 6 &&
-              Globals.currentIndex != 7)
-          ? BottomAppBar(
-              color: Colors.cyan,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.note, color: Colors.white),
-                    onPressed: () {
-                      onTabTapped(0);
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.bar_chart, color: Colors.white),
-                    onPressed: () {
-                      onTabTapped(1);
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add, color: Colors.white, size: 32.0),
-                    onPressed: () {
-                      onTabTapped(6);
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.report, color: Colors.white),
-                    onPressed: () {
-                      onTabTapped(2);
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.settings, color: Colors.white),
-                    onPressed: () {
-                      onTabTapped(3);
-                    },
-                  ),
-                ],
-              ),
-            )
-          : null,
+      bottomNavigationBar: ConvexAppBar(
+        style: TabStyle.flip,
+        backgroundColor: Colors.cyan,
+        items: const [
+          TabItem(icon: Icons.account_balance, title: 'Keuangan'),
+          TabItem(icon: Icons.bar_chart, title: 'Chart'),
+          TabItem(icon: Icons.add, title: 'Add'),
+          TabItem(icon: Icons.receipt_long, title: 'Report'),
+          TabItem(icon: Icons.more_horiz, title: 'More'),
+        ],
+        initialActiveIndex: Globals.currentIndex,
+        onTap: onTabTapped,
+      ),
     );
   }
 }

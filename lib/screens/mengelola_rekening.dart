@@ -1,7 +1,6 @@
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vasa/botnav.dart';
 import 'package:vasa/global.dart';
 import 'package:vasa/models/database.dart';
 import 'package:vasa/screens/tambah_rekening.dart';
@@ -14,10 +13,9 @@ class MengelolaRekening extends StatefulWidget {
 }
 
 class MengelolaRekeningState extends State<MengelolaRekening> {
-  
   late AppDatabase _database;
   late Future<List<Rekening>> _rekeningFuture;
-    Future<List<Rekening>> _fetchAllRekenings() async {
+  Future<List<Rekening>> _fetchAllRekenings() async {
     return await _database.getAllRekenings();
   }
 
@@ -27,13 +25,15 @@ class MengelolaRekeningState extends State<MengelolaRekening> {
       _rekeningFuture = _fetchAllRekenings();
     });
   }
+
   void onTabTapped(int index) {
     setState(() {
-      Globals.currentIndex = index; // Mengatur nilai currentIndex dari global.dart
+      Globals.currentIndex =
+          index; // Mengatur nilai currentIndex dari global.dart
     });
   }
 
-    IconData _getIconData(String jenis) {
+  IconData _getIconData(String jenis) {
     switch (jenis) {
       // Icons Rekening
       case 'crypto':
@@ -66,6 +66,7 @@ class MengelolaRekeningState extends State<MengelolaRekening> {
       return amount.toString();
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -73,92 +74,80 @@ class MengelolaRekeningState extends State<MengelolaRekening> {
     _rekeningFuture = _fetchAllRekenings();
   }
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: (Globals.currentIndex == 4)
-        ? AppBar(
-            title: const Text('Mengelola Rekening'),
-            backgroundColor: Colors.cyan,
-            toolbarHeight: 80,
-            centerTitle: true,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.black, size: 30),
-              onPressed: () {
-                onTabTapped(2);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const BotNav()),
-                );
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Mengelola Rekening'),
+        backgroundColor: Colors.cyan,
+        toolbarHeight: 80,
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder<List<Rekening>>(
+              future: _rekeningFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No Rekening found'));
+                } else {
+                  return ListView(
+                    children: snapshot.data!.map((rekening) {
+                      return _buildRekeningItem(
+                        _getIconData(rekening.jenis),
+                        rekening.catatan,
+                        rekening.uang < 0
+                            ? _formatCurrency(rekening.uang.abs())
+                                .replaceAll('.0', '')
+                            : _formatCurrency(rekening.uang)
+                                .replaceAll('.0', ''),
+                        rekening.uang < 0 ? Colors.red : Colors.blue,
+                        rekening.id, // Pass the rekening ID
+                        rekening, // Pass the rekening object
+                      );
+                    }).toList(),
+                  );
+                }
               },
             ),
-          )
-        : null,
-    body: Column(
-      children: [
-        Expanded(
-          child: FutureBuilder<List<Rekening>>(
-            future: _rekeningFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('No Rekening found'));
-              } else {
-                return ListView(
-                  children: snapshot.data!.map((rekening) {
-                    return _buildRekeningItem(
-                      _getIconData(rekening.jenis),
-                      rekening.catatan,
-                      rekening.uang < 0
-                          ? _formatCurrency(rekening.uang.abs()).replaceAll('.0', '')
-                          : _formatCurrency(rekening.uang).replaceAll('.0', ''),
-                      rekening.uang < 0 ? Colors.red : Colors.blue,
-                      rekening.id, // Pass the rekening ID
-                      rekening, // Pass the rekening object
-                    );
-                  }).toList(),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TambahRekening()),
                 );
-              }
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ElevatedButton.icon(
-            onPressed: () {
-              Globals.currentIndex = 5;
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const BotNav()),
-              );
-            },
-            icon: const Icon(Icons.add, color: Colors.black),
-            label: const Text(
-              'Tambahkan',
-              style: TextStyle(color: Colors.black, fontSize: 20),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.cyan, // Warna tombol
-              minimumSize: const Size(double.infinity, 50), // Lebar penuh
+              },
+              icon: const Icon(Icons.add, color: Colors.black),
+              label: const Text(
+                'Tambahkan',
+                style: TextStyle(color: Colors.black, fontSize: 20),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.cyan,
+                minimumSize: const Size(double.infinity, 50),
+              ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
-}
+        ],
+      ),
+    );
+  }
 
-  Widget _buildRekeningItem(IconData icon, String title, String amount, Color iconColor, int id, Rekening rekening) {
+  Widget _buildRekeningItem(IconData icon, String title, String amount,
+      Color iconColor, int id, Rekening rekening) {
     return Container(
-      height: 600,
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(color: Colors.black),
         ),
-      
       ),
       child: SingleChildScrollView(
         child: ListTile(
@@ -194,6 +183,5 @@ Widget build(BuildContext context) {
         ),
       ),
     );
-    
   }
 }

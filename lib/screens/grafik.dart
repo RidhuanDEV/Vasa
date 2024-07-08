@@ -49,6 +49,7 @@ class GrafikScreenState extends State<GrafikScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.cyan,
         automaticallyImplyLeading: false,
         title: InkWell(
           onTap: () => _selectMonth(context),

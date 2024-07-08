@@ -2,10 +2,10 @@ import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:intl/intl.dart'; // Add this import for DateFormat
-import 'package:vasa/botnav.dart';
+import 'package:intl/intl.dart';
 import 'package:vasa/global.dart';
-import 'package:vasa/models/database.dart'; // Add this import for database queries
+import 'package:vasa/models/database.dart';
+import 'package:vasa/screens/mengelola_rekening.dart';
 
 class LaporanPage extends StatefulWidget {
   const LaporanPage({super.key});
@@ -155,14 +155,6 @@ class LaporanPageState extends State<LaporanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: (Globals.currentIndex == 2)
-          ? AppBar(
-              automaticallyImplyLeading: false,
-              title: const Text('Laporan'),
-              centerTitle: true,
-              backgroundColor: Colors.cyan,
-            )
-          : null,
       body: Column(
         children: [
           Row(
@@ -227,18 +219,11 @@ class LaporanPageState extends State<LaporanPage> {
             ],
           ),
           isAnalysisSelected
-              ? Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(36),
-                    color: Colors.grey[200],
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () => selectYear(context),
-                    child: Text(
-                        'Pilih Tahun: ${DateFormat.y().format(selectedYear)}'),
-                  ),
-                )
+              ? ElevatedButton(
+                onPressed: () => selectYear(context),
+                child: Text(
+                    'Pilih Tahun: ${DateFormat.y().format(selectedYear)}'),
+              )
               : Container(),
           Expanded(
             child: isAnalysisSelected
@@ -388,7 +373,9 @@ class LaporanPageState extends State<LaporanPage> {
                               height: 20,
                               color: Colors.lightGreen,
                             ),
-                            const SizedBox(width: 8,),                  
+                            const SizedBox(
+                              width: 8,
+                            ),
                             Text(
                               'Pemasukan: ${_formatCurrency(pemasukan).replaceAll('.0', '')}',
                               style: GoogleFonts.montserrat(
@@ -396,8 +383,10 @@ class LaporanPageState extends State<LaporanPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20,),
-                        Row(                      
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
@@ -405,7 +394,9 @@ class LaporanPageState extends State<LaporanPage> {
                               height: 20,
                               color: Colors.orange,
                             ),
-                            const SizedBox(width: 8,),
+                            const SizedBox(
+                              width: 8,
+                            ),
                             Text(
                               'Pengeluaran: ${_formatCurrency(pengeluaran).replaceAll('.0', '')}',
                               style: GoogleFonts.montserrat(
@@ -437,8 +428,10 @@ class LaporanPageState extends State<LaporanPage> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        _formatCurrency(totalAnggaranBulanan)
-                            .replaceAll('.0', ''),
+                        totalAnggaranBulanan < 0
+                            ? '- ${_formatCurrency(totalAnggaranBulanan.abs()).replaceAll('.0', '')}'
+                            : _formatCurrency(totalAnggaranBulanan)
+                                .replaceAll('.0', ''),
                         style: GoogleFonts.montserrat(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -520,9 +513,10 @@ class LaporanPageState extends State<LaporanPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(decoration: const BoxDecoration(
-                      border: Border.symmetric(horizontal: BorderSide(color: Colors.black)),
-                      
+                  Container(
+                    decoration: const BoxDecoration(
+                      border: Border.symmetric(
+                          horizontal: BorderSide(color: Colors.black)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -546,11 +540,14 @@ class LaporanPageState extends State<LaporanPage> {
                     child: FutureBuilder<List<Rekening>>(
                       future: _fetchRekenings('crypto'),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
                           return const Center(
                               child: Text('Tidak ada Data Rekening'));
                         } else {
@@ -571,8 +568,8 @@ class LaporanPageState extends State<LaporanPage> {
                   ),
                   Container(
                     decoration: const BoxDecoration(
-                      border: Border.symmetric(horizontal: BorderSide(color: Colors.black)),
-                      
+                      border: Border.symmetric(
+                          horizontal: BorderSide(color: Colors.black)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -596,11 +593,14 @@ class LaporanPageState extends State<LaporanPage> {
                     child: FutureBuilder<List<Rekening>>(
                       future: _fetchRekenings('credit'),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
                           return const Center(
                               child: Text('Tidak ada Data Rekening'));
                         } else {
@@ -621,8 +621,8 @@ class LaporanPageState extends State<LaporanPage> {
                   ),
                   Container(
                     decoration: const BoxDecoration(
-                      border: Border.symmetric(horizontal: BorderSide(color: Colors.black)),
-                      
+                      border: Border.symmetric(
+                          horizontal: BorderSide(color: Colors.black)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -646,11 +646,14 @@ class LaporanPageState extends State<LaporanPage> {
                     child: FutureBuilder<List<Rekening>>(
                       future: _fetchRekenings('money'),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
                           return const Center(
                               child: Text('Tidak ada Data Rekening'));
                         } else {
@@ -671,8 +674,8 @@ class LaporanPageState extends State<LaporanPage> {
                   ),
                   Container(
                     decoration: const BoxDecoration(
-                      border: Border.symmetric(horizontal: BorderSide(color: Colors.black)),
-                      
+                      border: Border.symmetric(
+                          horizontal: BorderSide(color: Colors.black)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -696,11 +699,14 @@ class LaporanPageState extends State<LaporanPage> {
                     child: FutureBuilder<List<Rekening>>(
                       future: _fetchRekenings('wallet'),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
                           return const Center(
                               child: Text('Tidak ada Data Rekening'));
                         } else {
@@ -721,8 +727,8 @@ class LaporanPageState extends State<LaporanPage> {
                   ),
                   Container(
                     decoration: const BoxDecoration(
-                      border: Border.symmetric(horizontal: BorderSide(color: Colors.black)),
-                      
+                      border: Border.symmetric(
+                          horizontal: BorderSide(color: Colors.black)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -746,11 +752,14 @@ class LaporanPageState extends State<LaporanPage> {
                     child: FutureBuilder<List<Rekening>>(
                       future: _fetchRekenings('atm'),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
                           return const Center(
                               child: Text('Tidak ada Data Rekening'));
                         } else {
@@ -769,17 +778,15 @@ class LaporanPageState extends State<LaporanPage> {
                       },
                     ),
                   ),
-                  
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          Globals.currentIndex = 4;
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const BotNav()),
+                                builder: (context) => const MengelolaRekening()),
                           );
                         },
                         style: ElevatedButton.styleFrom(

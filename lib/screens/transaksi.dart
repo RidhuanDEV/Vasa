@@ -105,17 +105,8 @@ class _TransaksiState extends State<Transaksi> {
     final isEditMode = widget.transaction != null;
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 30),
-          onPressed: () {
-            Globals.currentIndex = 0;
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const BotNav()),
-            );
-          },
-        ),
-        title: Text(isEditMode ? 'Edit Transaksi' : 'Tambahkan Transaksi'),
+        automaticallyImplyLeading: false,
+        title: Text(isEditMode ? 'Edit Transaksi' : 'Buat Transaksi Baru'),
         backgroundColor: Colors.cyan,
         toolbarHeight: 80,
         centerTitle: true,

@@ -48,6 +48,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   month_picker_dialog: ^4.0.0
+  convex_bottom_bar: ^3.0.0
+
 
 dev_dependencies:
   flutter_test:

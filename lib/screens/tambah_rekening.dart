@@ -98,7 +98,6 @@ class _TambahRekeningState extends State<TambahRekening> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black, size: 30),
           onPressed: () {
-            Globals.currentIndex = 0;
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const BotNav()),

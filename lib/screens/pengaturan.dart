@@ -13,38 +13,21 @@ class _PengaturanState extends State<Pengaturan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: (Globals.currentIndex == 7)
-          ? AppBar(
-              toolbarHeight: 80,
-              centerTitle: true,
-              backgroundColor: Colors.cyan,
-              title: const Text(
-                'Pengaturan',
-                style: TextStyle(color: Colors.black),
-              ),
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.black),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            )
-          : null,
       body: ListView(
         children: [
-          _buildListTile(Icons.account_circle, 'Akun', context, 0),
-          _buildListTile(Icons.attach_money, 'Konversi Mata Uang', context, 1),
-          _buildListTile(Icons.palette, 'Tema', context, 2),
-          _buildListTile(Icons.privacy_tip, 'Kebijakan Privasi', context, 3),
-          _buildListTile(Icons.info, 'Tentang kami', context, 4),
-          _buildListTile(Icons.feedback, 'Umpan Balik', context, 5),
-          _buildListTile(Icons.delete, 'Hapus Data', context, 6),
+          _buildListTile(Icons.attach_money, 'Konversi Mata Uang', context, 0),
+          _buildListTile(Icons.palette, 'Tema', context, 1),
+          _buildListTile(Icons.privacy_tip, 'Kebijakan Privasi', context, 2),
+          _buildListTile(Icons.info, 'Tentang kami', context, 3),
+          _buildListTile(Icons.feedback, 'Umpan Balik', context, 4),
+          _buildListTile(Icons.delete, 'Hapus Data', context, 5),
         ],
       ),
     );
   }
 
-  Widget _buildListTile(IconData icon, String title, BuildContext context, int index) {
+  Widget _buildListTile(
+      IconData icon, String title, BuildContext context, int index) {
     return Container(
       decoration: const BoxDecoration(
         border: Border(
@@ -66,10 +49,8 @@ class _PengaturanState extends State<Pengaturan> {
   }
 
   void onTapTapped(BuildContext context, int index) {
-    
     switch (index) {
       case 0:
-        Globals.currentIndex = 8;
         break;
       case 1:
         // page = const KonversiMataUangPage();
