@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:vasa/screens/akun.dart';
 import 'package:vasa/screens/grafik.dart';
 import 'package:vasa/screens/homepage.dart';
 import 'package:vasa/screens/laporan.dart';
 import 'package:vasa/screens/mengelola_rekening.dart';
-import 'package:vasa/screens/pengaturan.dart';
 import 'package:vasa/screens/profile.dart';
 import 'package:vasa/global.dart';
 import 'package:vasa/screens/tambah_rekening.dart';
@@ -30,8 +28,6 @@ class BotNavState extends State<BotNav> {
     const ProfilePage(),
     const MengelolaRekening(),
     const TambahRekening(),
-    const Pengaturan(),
-    const AkunPage(),
   ];
 
   void onTabTapped(int index) {

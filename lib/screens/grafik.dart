@@ -78,7 +78,6 @@ class GrafikScreenState extends State<GrafikScreen> {
               final data = snapshot.data ?? [];
               final totalAmount = data.fold(0, (sum, item) => sum + item.uang);
 
-              // Group data by category and calculate percentages
               final Map<String, double> categoryPercentages = {};
               for (var item in data) {
                 if (!categoryPercentages.containsKey(item.jenis)) {

@@ -226,7 +226,6 @@ class _TambahRekeningState extends State<TambahRekening> {
                                       namaController.text,
                                     );
                                   }
-                                  Globals.currentIndex = 0;
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

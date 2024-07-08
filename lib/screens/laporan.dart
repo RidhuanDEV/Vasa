@@ -23,10 +23,12 @@ class LaporanPageState extends State<LaporanPage> {
   int totalMoney = 0;
   int totalWallet = 0;
   int totalAtm = 0;
+
   @override
   void initState() {
     super.initState();
     db = AppDatabase(NativeDatabase.memory());
+    _calculateTotals();
   }
 
   void onTabTapped(int index) {
@@ -580,7 +582,7 @@ class LaporanPageState extends State<LaporanPage> {
                               fontSize: 16.0, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          _formatCurrency(totalCrypto).replaceAll('.0', ''),
+                          _formatCurrency(totalCredit).replaceAll('.0', ''),
                           style: GoogleFonts.montserrat(
                               fontSize: 16.0, fontWeight: FontWeight.bold),
                         ),
@@ -633,7 +635,7 @@ class LaporanPageState extends State<LaporanPage> {
                               fontSize: 16.0, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          _formatCurrency(totalCrypto).replaceAll('.0', ''),
+                          _formatCurrency(totalMoney).replaceAll('.0', ''),
                           style: GoogleFonts.montserrat(
                               fontSize: 16.0, fontWeight: FontWeight.bold),
                         ),
@@ -686,7 +688,7 @@ class LaporanPageState extends State<LaporanPage> {
                               fontSize: 16.0, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          _formatCurrency(totalCrypto).replaceAll('.0', ''),
+                          _formatCurrency(totalWallet).replaceAll('.0', ''),
                           style: GoogleFonts.montserrat(
                               fontSize: 16.0, fontWeight: FontWeight.bold),
                         ),
@@ -739,7 +741,7 @@ class LaporanPageState extends State<LaporanPage> {
                               fontSize: 16.0, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          _formatCurrency(totalCrypto).replaceAll('.0', ''),
+                          _formatCurrency(totalAtm).replaceAll('.0', ''),
                           style: GoogleFonts.montserrat(
                               fontSize: 16.0, fontWeight: FontWeight.bold),
                         ),

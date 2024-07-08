@@ -1,106 +1,139 @@
+import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vasa/global.dart';
+import 'package:vasa/screens/convert.dart';
+import 'package:vasa/models/database.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  ProfilePageState createState() => ProfilePageState();
+}
+
+class ProfilePageState extends State<ProfilePage> {
+  late AppDatabase db;
+
   void onTabTapped(int index) {
     Globals.currentIndex = index;
   }
+
+  Future<void> formatData() async {
+    await db.deleteAllPengelola();
+    await db.deleteAllRekenings();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    db = AppDatabase(NativeDatabase.memory());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: (Globals.currentIndex == 3) ? PreferredSize(
-        preferredSize:
-            const Size.fromHeight(100.0), // Set the height of the AppBar
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              color: Colors.cyan, // Background color
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(30),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Ridhuan Rangga',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Text(
-                        'ID: 1152200025',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ) : null,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              buildProfileButton(
-                context,
-                icon: Icons.thumb_up,
-                text: 'Rekomendasi ke teman',
-                onPressed: () {},
-              ),
               const SizedBox(height: 10),
               buildProfileButton(
                 context,
                 icon: Icons.attach_money,
                 text: 'Konversi Mata Uang',
-                onPressed: () {},
-              ),
-              const SizedBox(height: 10),
-              buildProfileButton(
-                context,
-                icon: Icons.palette,
-                text: 'Tema Aplikasi',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CurrencyConversionPage()),
+                  );
+                },
               ),
               const SizedBox(height: 10),
               buildProfileButton(
                 context,
                 icon: Icons.privacy_tip,
                 text: 'Kebijakan Privasi',
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Kebijakan Privasi'),
+                        content:
+                            const Text('Aplikasi ini dibuat oleh kelompok 1'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Tutup'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
               const SizedBox(height: 10),
               buildProfileButton(
                 context,
                 icon: Icons.info,
                 text: 'Tentang Kami',
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Tentang Kami'),
+                        content:
+                            const Text('Aplikasi ini dibuat oleh kelompok 1'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Tutup'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
-             
               const SizedBox(height: 10),
               buildProfileButton(
                 context,
                 icon: Icons.delete,
                 text: 'Hapus Data',
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Konfirmasi Hapus Data'),
+                        content: const Text(
+                            'Apakah Anda yakin ingin menghapus data penyimpanan anda ?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('Tidak'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              formatData();
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Ya'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
-              
             ],
           ),
         ),

@@ -122,6 +122,15 @@ class AppDatabase extends _$AppDatabase {
   Future updateRekening(Rekening entry) {
     return update(rekenings).replace(entry);
   }
+  // wan live sahre
+  Future<void> deleteAllPengelola() {
+  return delete(pengelola).go();
+  }
+
+  Future<void> deleteAllRekenings() {
+  return delete(rekenings).go();
+  }
+
 }
 
 LazyDatabase _openConnection() {
