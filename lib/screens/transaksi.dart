@@ -113,6 +113,7 @@ class _TransaksiState extends State<Transaksi> {
       ),
       body: Column(
         children: [
+          const SizedBox(height: 16), // Add space above the buttons
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -127,7 +128,7 @@ class _TransaksiState extends State<Transaksi> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isPengeluaran ? Colors.black : Colors.white,
-                  shape:  RoundedRectangleBorder(
+                  shape: RoundedRectangleBorder(
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       bottomLeft: Radius.circular(10),
@@ -145,6 +146,7 @@ class _TransaksiState extends State<Transaksi> {
                   ),
                 ),
               ),
+              const SizedBox(width: 8), // Add space between the buttons
               ElevatedButton(
                 onPressed: () {
                   setState(() {
@@ -176,183 +178,176 @@ class _TransaksiState extends State<Transaksi> {
               ),
             ],
           ),
+          const SizedBox(height: 16), // Add space below the buttons
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: jumlahController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: 'Jumlah Uang',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Harap isi Jumlah';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: jenisController,
-                        decoration: const InputDecoration(
-                          labelText: 'Jenis',
-                          border: OutlineInputBorder(),
-                        ),
-                        enabled: false,
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: catatanController,
-                        decoration: const InputDecoration(
-                          labelText: 'Catatan',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Harap isi Catatan';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: dateController,
-                        readOnly: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Enter Date',
-                          border: OutlineInputBorder(),
-                        ),
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(DateTime.now().year - 5),
-                            lastDate: DateTime(DateTime.now().year + 5),
-                          );
-                          if (pickedDate != null) {
-                            String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-                            dateController.text = formattedDate;
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 32),
-                      SizedBox(
-                        height: 250,
-                        child: GridView.count(
-                          crossAxisCount: 4,
-                          childAspectRatio: 1,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          children: isPengeluaran
-                              ? pengeluaranIcons.map((icon) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      setIconJenis(icon['label']);
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Icon(
-                                          icon['icon'],
-                                          color: selectedIcon == icon['label']
-                                              ? Colors.green[500]
-                                              : Colors.black,
-                                          size: 30,
-                                        ),
-                                        Text(
-                                          icon['label'],
-                                          style: TextStyle(
-                                            color: selectedIcon == icon['label']
-                                                ? Colors.green[500]
-                                                : Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }).toList()
-                              : pemasukanIcons.map((icon) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      setIconJenis(icon['label']);
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Icon(
-                                          icon['icon'],
-                                          color: selectedIcon == icon['label']
-                                              ? Colors.green[500]
-                                              : Colors.black,
-                                          size: 30,
-                                        ),
-                                        Text(
-                                          icon['label'],
-                                          style: TextStyle(
-                                            color: selectedIcon == icon['label']
-                                                ? Colors.green[500]
-                                                : Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      ElevatedButton(
-                        onPressed: isButtonEnabled
-                            ? () async {
-                                if (_formKey.currentState!.validate()) {
-                                  if (isEditMode) {
-                                    await updateTransaction(widget.transaction!);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Update Berhasil'),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 250,
+                      child: GridView.count(
+                        crossAxisCount: 4,
+                        childAspectRatio: 1,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: isPengeluaran
+                            ? pengeluaranIcons.map((icon) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setIconJenis(icon['label']);
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Icon(
+                                        icon['icon'],
+                                        color: selectedIcon == icon['label']
+                                            ? Colors.green[500]
+                                            : Colors.black,
+                                        size: 30,
                                       ),
-                                    );
-                                  } else {
-                                    await insert(
-                                      jenisController.text,
-                                      int.parse(jumlahController.text),
-                                      type,
-                                      catatanController.text,
-                                      DateTime.parse(dateController.text),
-                                    );
-                                  }
-                                  Globals.currentIndex = 0;
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const BotNav(),
-                                    ),
-                                  );
-                                }
-                              }
-                            : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: isButtonEnabled
-                              ? Colors.blue
-                              : Colors.grey,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            isEditMode ? 'Save Changes' : 'Tambahkan Transaksi',
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        ),
+                                      const SizedBox(height: 8), // Add space between icon and label
+                                      Text(
+                                        icon['label'],
+                                        style: TextStyle(
+                                          color: selectedIcon == icon['label']
+                                              ? Colors.green[500]
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList()
+                            : pemasukanIcons.map((icon) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setIconJenis(icon['label']);
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Icon(
+                                        icon['icon'],
+                                        color: selectedIcon == icon['label']
+                                            ? Colors.green[500]
+                                            : Colors.black,
+                                        size: 30,
+                                      ),
+                                      const SizedBox(height: 8), // Add space between icon and label
+                                      Text(
+                                        icon['label'],
+                                        style: TextStyle(
+                                          color: selectedIcon == icon['label']
+                                              ? Colors.green[500]
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 16), // Add space below the icons
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: jumlahController,
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                              labelText: 'Jumlah Uang',
+                              border: OutlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Harap isi Jumlah';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: jenisController,
+                            decoration: const InputDecoration(
+                              labelText: 'Jenis',
+                              border: OutlineInputBorder(),
+                            ),
+                            enabled: false,
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: catatanController,
+                            decoration: const InputDecoration(
+                              labelText: 'Catatan',
+                              border: OutlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Harap isi Catatan';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: dateController,
+                            readOnly: true,
+                            decoration: const InputDecoration(
+                              labelText: 'Masukkan Tanggal',
+                              border: OutlineInputBorder(),
+                            ),
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(DateTime.now().year - 5),
+                                lastDate: DateTime(DateTime.now().year + 5),
+                              );
+                              if (pickedDate != null) {
+                                String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                dateController.text = formattedDate;
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: isButtonEnabled
+                                ? () {
+                                    if (_formKey.currentState!.validate()) {
+                                      final jenis = jenisController.text;
+                                      final jumlah = int.parse(jumlahController.text);
+                                      final catatan = catatanController.text;
+                                      final tanggal = DateTime.parse(dateController.text);
+
+                                      if (isEditMode) {
+                                        updateTransaction(widget.transaction!.copyWith(
+                                          jenis: jenis,
+                                          uang: jumlah,
+                                          catatan: catatan,
+                                          type: type,
+                                          transaksidate: tanggal,
+                                        ));
+                                      } else {
+                                        insert(jenis, jumlah, type, catatan, tanggal);
+                                      }
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const BotNav()),
+                                      );
+                                    }
+                                  }
+                                : null,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: isButtonEnabled ? Colors.green : Colors.grey,
+                            ),
+                            child: const Text('Tambahkan Transaksi'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -360,32 +355,31 @@ class _TransaksiState extends State<Transaksi> {
         ],
       ),
     );
-
   }
-  final List<Map<String, dynamic>> pengeluaranIcons = [
-    {'icon': Icons.shopping_cart, 'label': 'Belanja'},
-    {'icon': Icons.restaurant, 'label': 'Makanan'},
-    {'icon': Icons.school, 'label': 'Pendidikan'},
-    {'icon': Icons.phone_android, 'label': 'Pulsa'},
-    {'icon': Icons.videogame_asset, 'label': 'Game'},
-    {'icon': Icons.checkroom, 'label': 'Pakaian'},
-    {'icon': Icons.directions_bus, 'label': 'Transportasi'},
-    {'icon': Icons.local_bar, 'label': 'Minuman'},
-    {'icon': Icons.smoking_rooms, 'label': 'Rokok'},
-    {'icon': Icons.electrical_services, 'label': 'Elektronik'},
-    {'icon': Icons.flight, 'label': 'Flight'},
-    {'icon': Icons.pets, 'label': 'Peliharaan'},
-    {'icon': Icons.card_giftcard, 'label': 'Hadiah'},
-    {'icon': Icons.volunteer_activism, 'label': 'Donasi'},
-    {'icon': Icons.local_florist, 'label': 'Buah'},
-    {'icon': Icons.apps, 'label': 'Lain-lain'},
-  ];
-
-  final List<Map<String, dynamic>> pemasukanIcons = [
-    {'icon': Icons.attach_money, 'label': 'Gaji'},
-    {'icon': Icons.trending_up, 'label': 'Investasi'},
-    {'icon': Icons.work, 'label': 'Paruh Waktu'},
-    {'icon': Icons.emoji_events, 'label': 'Penghargaan'},
-    {'icon': Icons.apps, 'label': 'Lain-lain'},
-  ];
 }
+
+final List<Map<String, dynamic>> pengeluaranIcons = [
+  {'icon': Icons.shopping_cart, 'label': 'Belanja'},
+  {'icon': Icons.restaurant, 'label': 'Makanan'},
+  {'icon': Icons.school, 'label': 'Pendidikan'},
+  {'icon': Icons.phone_android, 'label': 'Pulsa'},
+  {'icon': Icons.videogame_asset, 'label': 'Game'},
+  {'icon': Icons.checkroom, 'label': 'Pakaian'},
+  {'icon': Icons.directions_car, 'label': 'Transportasi'},
+  {'icon': Icons.local_drink, 'label': 'Minuman'},
+  {'icon': Icons.smoking_rooms, 'label': 'Rokok'},
+  {'icon': Icons.pets, 'label': 'Hewan Peliharaan'},
+  {'icon': Icons.park, 'label': 'Hobi'},
+  {'icon': Icons.medical_services, 'label': 'Kesehatan'},
+];
+
+final List<Map<String, dynamic>> pemasukanIcons = [
+  {'icon': Icons.attach_money, 'label': 'Gaji'},
+  {'icon': Icons.money, 'label': 'Bonus'},
+  {'icon': Icons.business_center, 'label': 'Bisnis'},
+  {'icon': Icons.card_giftcard, 'label': 'Hadiah'},
+  {'icon': Icons.savings, 'label': 'Investasi'},
+  {'icon': Icons.real_estate_agent, 'label': 'Properti'},
+  {'icon': Icons.people, 'label': 'Freelance'},
+  {'icon': Icons.support, 'label': 'Dukungan'},
+];

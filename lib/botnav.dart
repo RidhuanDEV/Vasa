@@ -83,7 +83,7 @@ class BotNavState extends State<BotNav> {
         automaticallyImplyLeading: false,
         toolbarHeight: 120,
         title: const Center(
-          child: Text('More Feature', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold)),
+          child: Text('Menu Lainnya', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.bold)),
         ),
         backgroundColor: Colors.cyan,
         centerTitle: true,
@@ -103,13 +103,14 @@ class BotNavState extends State<BotNav> {
       body: _children[Globals.currentIndex],
       bottomNavigationBar: ConvexAppBar(
         style: TabStyle.flip,
+        activeColor: Colors.red,
         backgroundColor: Colors.cyan,
         items: const [
           TabItem(icon: Icons.account_balance, title: 'Keuangan'),
-          TabItem(icon: Icons.bar_chart, title: 'Chart'),
-          TabItem(icon: Icons.add, title: 'Add'),
-          TabItem(icon: Icons.receipt_long, title: 'Report'),
-          TabItem(icon: Icons.more_horiz, title: 'More'),
+          TabItem(icon: Icons.bar_chart, title: 'Grafik'),
+          TabItem(icon: Icons.add, title: 'Tambah'),
+          TabItem(icon: Icons.receipt_long, title: 'Laporan'),
+          TabItem(icon: Icons.more_horiz, title: 'Lainnya'),
         ],
         initialActiveIndex: Globals.currentIndex,
         onTap: onTabTapped,

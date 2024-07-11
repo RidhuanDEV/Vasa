@@ -16,27 +16,43 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
   double _amount = 1.0;
   String _result = '';
 
+  final Map<String, String> _currencyNames = {
+    'USD': 'Dollar',
+    'EUR': 'Euro',
+    'JPY': 'Yen',
+    'GBP': 'Pound',
+    'AUD': 'Australian Dollar',
+    'CAD': 'Canadian Dollar',
+    'CHF': 'Swiss Franc',
+    'CNY': 'Yuan',
+    'HKD': 'Hong Kong Dollar',
+    'SGD': 'Singapore Dollar',
+    'NZD': 'New Zealand Dollar',
+    'THB': 'Baht',
+    'MXN': 'Peso',
+    'MYR': 'Ringgit',
+    'KRW': 'Won',
+    'INR': 'Rupee',
+    'BRL': 'Real',
+    'ZAR': 'Rand',
+    'TRY': 'Lira',
+    'IDR': 'Rupiah',
+  };
+
   final List<String> _currencies = [
-    'USD',
-    'EUR',
-    'GBP',
-    'JPY',
-    'AUD',
-    'IDR',
-    // Add more currencies as needed
+    'USD', 'EUR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY', 'HKD', 'SGD', 'NZD', 'THB', 'MXN', 'MYR', 'KRW', 'INR', 'BRL', 'ZAR', 'TRY', 'IDR'
   ];
 
   Future<void> _convertCurrency() async {
-    final url = Uri.parse('https://api.exchangerate-api.com/v4/latest/$_fromCurrency');
+    final url = Uri.parse('https://v6.exchangerate-api.com/v6/fbf9de967294c12629b0d7c9/pair/$_fromCurrency/$_toCurrency/$_amount');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      final rate = data['rates'][_toCurrency];
-      final result = _amount * rate;
+      final conversionResult = data['conversion_result'];
 
       setState(() {
-        _result = '$result $_toCurrency';
+        _result = '$conversionResult $_toCurrency';
       });
     } else {
       setState(() {
@@ -49,7 +65,7 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Konversi Mata Uang'),
+        title: const Text('Konversi Mata Uang'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -57,40 +73,46 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
           key: _formKey,
           child: Column(
             children: [
-              DropdownButtonFormField<String>(
-                value: _fromCurrency,
-                items: _currencies.map((currency) {
-                  return DropdownMenuItem(
-                    value: currency,
-                    child: Text(currency),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _fromCurrency = value!;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Dari'),
+              DropdownButtonHideUnderline(
+                child: DropdownButtonFormField<String>(
+                  value: _fromCurrency,
+                  items: _currencies.map((currency) {
+                    return DropdownMenuItem(
+                      value: currency,
+                      child: Text(_currencyNames[currency] ?? currency),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _fromCurrency = value!;
+                    });
+                  },
+                  decoration: const InputDecoration(labelText: 'Dari'),
+                  isExpanded: false,
+                ),
               ),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                value: _toCurrency,
-                items: _currencies.map((currency) {
-                  return DropdownMenuItem(
-                    value: currency,
-                    child: Text(currency),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _toCurrency = value!;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Ke'),
+              DropdownButtonHideUnderline(
+                child: DropdownButtonFormField<String>(
+                  value: _toCurrency,
+                  items: _currencies.map((currency) {
+                    return DropdownMenuItem(
+                      value: currency,
+                      child: Text(_currencyNames[currency] ?? currency),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _toCurrency = value!;
+                    });
+                  },
+                  decoration: const InputDecoration(labelText: 'Ke'),
+                  isExpanded: false,
+                ),
               ),
               const SizedBox(height: 10),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Jumlah'),
+                decoration: const InputDecoration(labelText: 'Jumlah'),
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   _amount = double.tryParse(value) ?? 1.0;
@@ -99,12 +121,12 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _convertCurrency,
-                child: Text('Konversi'),
+                child: const Text('Konversi'),
               ),
               const SizedBox(height: 20),
               Text(
                 _result,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ],
           ),
