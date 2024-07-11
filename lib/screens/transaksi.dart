@@ -46,19 +46,20 @@ class _TransaksiState extends State<Transaksi> {
     }
   }
 
-  Future<void> insert(String jenis, int jumlah, int type, String catatan, DateTime tanggal) async {
+  Future<void> insert(String jenis, int jumlah, int type, String catatan,
+      DateTime tanggal) async {
     DateTime now = DateTime.now();
     await database.into(database.pengelola).insertReturning(
-      PengelolaCompanion.insert(
-        jenis: jenis,
-        uang: jumlah,
-        catatan: catatan,
-        createdAt: now,
-        updatedAt: now,
-        type: type,
-        transaksidate: tanggal,
-      ),
-    );
+          PengelolaCompanion.insert(
+            jenis: jenis,
+            uang: jumlah,
+            catatan: catatan,
+            createdAt: now,
+            updatedAt: now,
+            type: type,
+            transaksidate: tanggal,
+          ),
+        );
   }
 
   Future<void> updateTransaction(Pengelolaan transaction) async {
@@ -86,7 +87,8 @@ class _TransaksiState extends State<Transaksi> {
       jenisController.text = widget.transaction!.jenis;
       jumlahController.text = widget.transaction!.uang.toString();
       catatanController.text = widget.transaction!.catatan;
-      dateController.text = DateFormat('yyyy-MM-dd').format(widget.transaction!.transaksidate);
+      dateController.text =
+          DateFormat('yyyy-MM-dd').format(widget.transaction!.transaksidate);
       type = widget.transaction!.type;
       isPengeluaran = type == 1;
       selectedIcon = widget.transaction!.jenis;
@@ -206,7 +208,9 @@ class _TransaksiState extends State<Transaksi> {
                                             : Colors.black,
                                         size: 30,
                                       ),
-                                      const SizedBox(height: 8), // Add space between icon and label
+                                      const SizedBox(
+                                          height:
+                                              8), // Add space between icon and label
                                       Text(
                                         icon['label'],
                                         style: TextStyle(
@@ -233,7 +237,9 @@ class _TransaksiState extends State<Transaksi> {
                                             : Colors.black,
                                         size: 30,
                                       ),
-                                      const SizedBox(height: 8), // Add space between icon and label
+                                      const SizedBox(
+                                          height:
+                                              8), // Add space between icon and label
                                       Text(
                                         icon['label'],
                                         style: TextStyle(
@@ -306,7 +312,8 @@ class _TransaksiState extends State<Transaksi> {
                                 lastDate: DateTime(DateTime.now().year + 5),
                               );
                               if (pickedDate != null) {
-                                String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                String formattedDate =
+                                    DateFormat('yyyy-MM-dd').format(pickedDate);
                                 dateController.text = formattedDate;
                               }
                             },
@@ -317,12 +324,15 @@ class _TransaksiState extends State<Transaksi> {
                                 ? () {
                                     if (_formKey.currentState!.validate()) {
                                       final jenis = jenisController.text;
-                                      final jumlah = int.parse(jumlahController.text);
+                                      final jumlah =
+                                          int.parse(jumlahController.text);
                                       final catatan = catatanController.text;
-                                      final tanggal = DateTime.parse(dateController.text);
+                                      final tanggal =
+                                          DateTime.parse(dateController.text);
 
                                       if (isEditMode) {
-                                        updateTransaction(widget.transaction!.copyWith(
+                                        updateTransaction(
+                                            widget.transaction!.copyWith(
                                           jenis: jenis,
                                           uang: jumlah,
                                           catatan: catatan,
@@ -330,17 +340,48 @@ class _TransaksiState extends State<Transaksi> {
                                           transaksidate: tanggal,
                                         ));
                                       } else {
-                                        insert(jenis, jumlah, type, catatan, tanggal);
+                                        insert(jenis, jumlah, type, catatan,
+                                            tanggal);
                                       }
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => const BotNav()),
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const BotNav()),
                                       );
                                     }
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Konfirmasi'),
+                                          content: const SingleChildScrollView(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                    'Transaksi berhasil ditambahkan!'
+                                                  ),
+                                              ],
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('Tutup'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   }
                                 : null,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: isButtonEnabled ? Colors.green : Colors.grey,
+                              backgroundColor:
+                                  isButtonEnabled ? Colors.green : Colors.grey,
                             ),
                             child: const Text('Tambahkan Transaksi'),
                           ),

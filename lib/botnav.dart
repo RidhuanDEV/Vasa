@@ -4,7 +4,7 @@ import 'package:vasa/screens/grafik.dart';
 import 'package:vasa/screens/homepage.dart';
 import 'package:vasa/screens/laporan.dart';
 import 'package:vasa/screens/mengelola_rekening.dart';
-import 'package:vasa/screens/profile.dart';
+import 'package:vasa/screens/more.dart';
 import 'package:vasa/global.dart';
 import 'package:vasa/screens/tambah_rekening.dart';
 import 'package:vasa/screens/transaksi.dart';
@@ -23,8 +23,8 @@ class BotNavState extends State<BotNav> {
   final List<Widget> _children = [
     HomePage(initialDate: DateTime.now()),
     const GrafikScreen(),
-    const Transaksi(),       // Transaksi screen
-    const LaporanPage(),     // Laporan screen
+    const Transaksi(),       
+    const LaporanPage(),     
     const ProfilePage(),
     const MengelolaRekening(),
     const TambahRekening(),
@@ -32,7 +32,7 @@ class BotNavState extends State<BotNav> {
 
   void onTabTapped(int index) {
     setState(() {
-      Globals.currentIndex = index; // Mengatur nilai currentIndex dari global.dart
+      Globals.currentIndex = index;
       if (index == 0) {
         _homePageDate = DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()));
         _children[0] = HomePage(initialDate: _homePageDate);
