@@ -37,7 +37,7 @@ class ViewTransaksiState extends State<ViewTransaksi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Transactions', style: GoogleFonts.montserrat()),
+        title: Text('Semua Transaksi', style: GoogleFonts.montserrat(),),
       ),
       body: FutureBuilder<List<Pengelolaan>>(
         future: _transactionsFuture,
@@ -56,8 +56,8 @@ class ViewTransaksiState extends State<ViewTransaksi> {
                   transaction.catatan,
                   transaction.uang < 0 ? _formatCurrency(transaction.uang.abs()).replaceAll('.0', '') : _formatCurrency(transaction.uang).replaceAll('.0', ''),
                   transaction.uang < 0 ? Colors.red : Colors.blue,
-                  transaction.id, // Pass the transaction ID
-                  transaction, // Pass the transaction object
+                  transaction.id,
+                  transaction,
                 );
               }).toList(),
             );

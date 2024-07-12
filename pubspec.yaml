@@ -28,7 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  google_fonts: ^6.2.1
+  google_fonts: 4.0.4
   flutter:
     sdk: flutter
 
@@ -48,6 +48,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   month_picker_dialog: ^4.0.0
+  convex_bottom_bar: ^3.0.0
+  http: ^0.13.3
+  flutter_launcher_icons: ^0.13.1
+
 
 dev_dependencies:
   flutter_test:
@@ -104,3 +108,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons.jpg"
+  min_sdk_android: 21 # android min sdk min:16, default 21

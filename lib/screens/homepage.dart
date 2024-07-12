@@ -197,7 +197,7 @@ class HomePageState extends State<HomePage> {
                         style: GoogleFonts.montserrat(
                             color: _totalIncome - _totalExpense < 0
                                 ? Colors.red
-                                : Colors.green,
+                                : const Color.fromARGB(255, 0, 255, 8),
                             fontWeight: FontWeight.bold),
                       ),
                     ],
