@@ -122,6 +122,10 @@ class HomePageState extends State<HomePage> {
         return Icons.local_florist;
       case 'Lain-lain':
         return Icons.apps;
+      case 'Hobi':
+        return Icons.park;
+      case 'Kesehatan':
+        return Icons.medical_services;
 
       // Pemasukan Icons
       case 'Gaji':
@@ -132,6 +136,16 @@ class HomePageState extends State<HomePage> {
         return Icons.work;
       case 'Penghargaan':
         return Icons.emoji_events;
+      case 'Bonus':
+        return Icons.money;
+      case 'Bisnis':
+        return Icons.business_center;
+      case 'Properti':
+        return Icons.real_estate_agent;
+      case 'Freelance':
+        return Icons.people;
+      case 'Dukungan':
+        return Icons.support;
       default:
         return Icons.error; // Default icon if nameicon is not recognized
     }

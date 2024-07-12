@@ -321,7 +321,7 @@ class _TransaksiState extends State<Transaksi> {
                           const SizedBox(height: 16),
                           ElevatedButton(
                             onPressed: isButtonEnabled
-                                ? () {
+                                ? () async {
                                     if (_formKey.currentState!.validate()) {
                                       final jenis = jenisController.text;
                                       final jumlah =
@@ -331,17 +331,19 @@ class _TransaksiState extends State<Transaksi> {
                                           DateTime.parse(dateController.text);
 
                                       if (isEditMode) {
-                                        updateTransaction(
-                                            widget.transaction!.copyWith(
-                                          jenis: jenis,
-                                          uang: jumlah,
-                                          catatan: catatan,
-                                          type: type,
-                                          transaksidate: tanggal,
-                                        ));
+                                        await updateTransaction(
+                                          widget.transaction!.copyWith(
+                                            jenis: jenis,
+                                            uang: jumlah,
+                                            catatan: catatan,
+                                            type: type,
+                                            transaksidate: tanggal,
+                                          ),
+                                        );
+                                        
                                       } else {
-                                        insert(jenis, jumlah, type, catatan,
-                                            tanggal);
+                                        await insert(jenis, jumlah, type,
+                                            catatan, tanggal);
                                       }
                                       Navigator.push(
                                         context,
@@ -349,8 +351,8 @@ class _TransaksiState extends State<Transaksi> {
                                             builder: (context) =>
                                                 const BotNav()),
                                       );
-                                    }
-                                    showDialog(
+                                      if (!isEditMode){
+                                        showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
@@ -361,8 +363,7 @@ class _TransaksiState extends State<Transaksi> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                    'Transaksi berhasil ditambahkan!'
-                                                  ),
+                                                    'Transaksi berhasil ditambahkan!'),
                                               ],
                                             ),
                                           ),
@@ -377,6 +378,16 @@ class _TransaksiState extends State<Transaksi> {
                                         );
                                       },
                                     );
+                                      }else {
+                                      ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Update Berhasil'),
+                                          ),
+                                        );
+                                    }
+                                    }
+                                    
                                   }
                                 : null,
                             style: ElevatedButton.styleFrom(
